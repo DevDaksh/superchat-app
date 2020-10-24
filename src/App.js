@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './App.css';
 
 import firebase from 'firebase/app';
@@ -47,21 +47,22 @@ function SignIn() {
   }
 
   return (
-    <>
+    <div className="signIn">
       <button className="sign-in" onClick={signInWithGoogle}>Sign in with Google</button>
       <p>Do not violate the community guidelines or you will be banned for life!</p>
-    </>
+    </div>
   )
 
 }
 
 function SignOut() {
   return auth.currentUser && (
-    <button onClick={auth.signOut}>Sign Out</button>
+    <button onClick={firebase.auth().signOut()}>Sign Out</button>
   )
 }
 
 function ChatRoom() {
+
   const messagesRef = firestore.collection('messages');
   const query = messagesRef.orderBy('createdAt').limit(20);
 
@@ -69,8 +70,11 @@ function ChatRoom() {
 
   const [formValue, setFormValue] = useState('');
 
-  const dummy = useRef();
+  const dummy = useRef(null);
 
+  useEffect(() => {
+    dummy.current.scrollIntoView({ behavior: 'smooth' })
+  })
 
   const submitMessage = async (e) => {
     e.preventDefault();
@@ -88,12 +92,12 @@ function ChatRoom() {
   return (
     <>
       <div>
-        <section>
+        <section className="chatRoom">
           {messages && messages.map(msg => (
             <ChatMessage key={msg.id} msg={msg} />
           ))}
 
-          <div ref={dummy}></div>
+          <div className="dmmy" ref={dummy}></div>
         </section>
 
 
@@ -108,12 +112,12 @@ function ChatRoom() {
 
 }
 
-function ChatMessage({ msg, key }) {
-  const { photoURL, uid, text } = msg;
+function ChatMessage({ msg }) {
+  const { photoURL, uid, text, id } = msg;
   const messageClass = uid === auth.currentUser.uid ? 'sent' : 'received'
   return (
-    <div key={key} className={`message ${messageClass}`}>
-      <img src={photoURL} />
+    <div key={id} className={`message ${messageClass}`}>
+      <img alt="pfp " src={photoURL} />
       <p>{text}</p>
     </div>
   )
@@ -123,8 +127,9 @@ function Header() {
   return (
     <>
       <div className="header">
-        <span>💯⚛🔥</span>
-        <button onClick={SignOut}>SignOut</button>
+        <span aria-label='emoji' role='img'>⚛🔥</span>
+        {auth.currentUser ? <button onClick={SignOut}>SignOut</button> : <div></div>}
+
       </div>
     </>
   )

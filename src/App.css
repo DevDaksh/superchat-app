@@ -29,18 +29,18 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: 100vh;
+  min-height: 100%;
   background-color: rgb(40, 37, 53);
 }
 
-main {
+/* main {
   padding: 10px;
   height: 80vh;
   margin: 10vh 0 10vh;
   overflow-y: scroll;
   display: flex;
   flex-direction: column;
-}
+} */
 
 main::-webkit-scrollbar {
   width: 0.25rem;
@@ -107,8 +107,13 @@ button:disabled {
   margin: 0 auto;
 }
 
-
-
+.signIn {
+  height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
 
 ul, li {
   text-align: left;
@@ -131,6 +136,14 @@ p {
   align-items: center;
 }
 
+.dmmy{
+  margin: 2.5rem 1rem;
+}
+
+.chatRoom {
+  height: 100%;
+  padding: 4rem 0rem 0 0;
+}
 
 .sent {
   flex-direction: row-reverse;
